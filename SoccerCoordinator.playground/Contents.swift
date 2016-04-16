@@ -74,9 +74,9 @@ func writeLetters(teamArr: [[String:String]], team: String, gameTime:String, gam
 }
 
 // call writeLetters() for each of the three teams
-writeLetters(sharks, team: "Sharks", gameTime: "1:00pm", gameDate: "April 29, 2016")
-writeLetters(raptors, team: "Raptors", gameTime: "2:30pm", gameDate: "May 2, 2016")
-writeLetters(dragons, team: "Dragons", gameTime: "4:00pm", gameDate: "April 24, 2016")
+writeLetters(sharks, team: "Sharks", gameTime: "3pm", gameDate: "March 17")
+writeLetters(raptors, team: "Raptors", gameTime: "1pm", gameDate: "March 18")
+writeLetters(dragons, team: "Dragons", gameTime: "1pm", gameDate: "March 17")
 
 
 // Bonus: Logic to ensure that each team's average height is within 1.5 inches of the others as well as having each team contain the same number of experienced players.
