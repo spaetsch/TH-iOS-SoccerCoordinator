@@ -4,6 +4,7 @@
 
 // Manually create a single collection that contains all information for all 18 players. Each player should themselves be represented by their own collection.
 
+// Array of dictionaries. Each dictionary stores data for one player. Array stores all player dictionaries.
 let allPlayers : [[ String:String ]] = [
     ["name": "Joe Smith", "height": "42", "experience": "YES", "guardians": "Jim and Jan Smith"],
     ["name": "Jill Tanner", "height": "36", "experience": "YES", "guardians" : "Clara Tanner"],
@@ -25,16 +26,18 @@ let allPlayers : [[ String:String ]] = [
     ["name": "Herschel Krustofski", "height": "45", "experience": "YES", "guardians" : "Hyman and Rachel Krustofski"]
 ]
 
-
 // Create appropriate variables and logic to sort and store players into three teams: Sharks, Dragons and Raptors. Be sure that your logic results in all teams having the same number of experienced players on each.
+
+// Arrays for dividing players based on whether they are experienced
+var expPlayers : [[String:String]] = []
+var otherPlayers : [[String:String]] = []
 
 // Team arrays
 var sharks : [[String:String]] = []
 var dragons : [[String:String]] = []
 var raptors : [[String:String]] = []
-var expPlayers : [[String:String]] = []
-var otherPlayers : [[String:String]] = []
 
+// Divide players into two arrays based on whether they are experienced
 for current in allPlayers {
     if (current["experience"] == "YES") {
         expPlayers.append(current)
@@ -43,23 +46,7 @@ for current in allPlayers {
     }
 }
 
-var expPerTeam = expPlayers.count / 3
-var otherPerTeam = otherPlayers.count / 3
-
-//for num in 0..<expPerTeam {
-//    sharks.append(expPlayers[num])
-//    dragons.append(expPlayers[num+1])
-//    raptors.append(expPlayers[num+2])
-//}
-//for num in 0..<otherPerTeam {
-//    sharks.append(otherPlayers[num])
-//    dragons.append(otherPlayers[num+1])
-//    raptors.append(otherPlayers[num+2])
-//}
-
-otherPlayers
-
-
+// function takes an array of players and evenly divides its players among the three teams
 func dividePlayers(origin: [[String:String]]) {
     var num = 0
     while num < origin.count {
@@ -70,13 +57,33 @@ func dividePlayers(origin: [[String:String]]) {
     }
 }
 
+// call dividePlayers() on the experienced and inexperienced player arrays to divide them evenly among the three teams
 dividePlayers(otherPlayers)
 dividePlayers(expPlayers)
 
+// Provide logic that prints a personalized letter to the guardians specifying: the player’s name, guardians' names, team name, and date/time of their first team practice. The letters should be visible when code is placed in a XCode Playground or run in an XCode project.
 
-// Bonus: Logic to ensure that each team's average height is within 1.5 inch of the others as well as having each team contain the same number of experienced players.
+// function takes team array, team name, and date of first game as arguments
+// generates letters to guardians with necessary info
+func writeLetters(teamArr: [[String:String]], team: String, gameTime:String, gameDate: String){
+    for player in teamArr {
+        let name = player["name"]!
+        let guardians = player["guardians"]!
+        print("Dear \(guardians),\n  This letter is to notify you that your child, \(name), has been assigned to the \(team) soccer team. The first game of the season will be at \(gameTime) on \(gameDate).\n See you then!\n The Super Awesome Soccer League \n")
+    }
+}
+
+// call writeLetters() for each of the three teams
+writeLetters(sharks, team: "Sharks", gameTime: "1:00pm", gameDate: "April 29, 2016")
+writeLetters(raptors, team: "Raptors", gameTime: "2:30pm", gameDate: "May 2, 2016")
+writeLetters(dragons, team: "Dragons", gameTime: "4:00pm", gameDate: "April 24, 2016")
 
 
+// Bonus: Logic to ensure that each team's average height is within 1.5 inches of the others as well as having each team contain the same number of experienced players.
+
+// I did not solve the sorting problem, but I did manage to create the logic for determining whether the three teams meet the requirement.
+
+// function takes a team array and returns its average height
 func findAvgHeight(team: [[String:String]]) -> Double {
     var htSum  = 0.0
     for current in team {
@@ -85,47 +92,19 @@ func findAvgHeight(team: [[String:String]]) -> Double {
     return htSum / Double(team.count)
 }
 
-var sharkAvg = findAvgHeight(sharks)
-var raptorAvg = findAvgHeight(raptors)
-var dragonAvg = findAvgHeight(dragons)
-
-func checkHtAvg() -> Bool {
-
-    if (abs(sharkAvg - raptorAvg) <= 1.5 && abs(raptorAvg - dragonAvg) <= 1.5 && abs(sharkAvg - dragonAvg) <= 1.5) {
+// function takes two team arrays and a range Double value as arguments
+// determines whether the average heights for each team have a difference less than range
+// returns Bool
+func compareHtAvg(team1: [[String:String]], team2: [[String:String]], range: Double ) -> Bool {
+    if (abs(findAvgHeight(team1) - findAvgHeight(team2)) <= range){
         return true
     }
     return false
-    
-}
-checkHtAvg()
-
-
-
-
-
-
-
-// Provide logic that prints a personalized letter to the guardians specifying: the player’s name, guardians' names, team name, and date/time of their first team practice. The letters should be visible when code is placed in a XCode Playground or run in an XCode project.
-
-
-func writeLetters(teamArr: [[String:String]], team: String, gameDate: String){
-    for player in teamArr {
-        let name = player["name"]!
-        let guardians = player["guardians"]!
-        
-        print("Dear \(guardians) your kid is \(name). Assigned to \(team). First game on \(gameDate)")
-    }
 }
 
+compareHtAvg(sharks, team2: raptors, range: 1.5)
+compareHtAvg(raptors, team2: dragons, range: 1.5)
+compareHtAvg(sharks, team2: dragons, range: 1.5)
 
-writeLetters(sharks, team: "Sharks", gameDate: "12/3/14")
-writeLetters(raptors, team: "Raptors", gameDate: "1/5/16")
 
 
-
-// Calculate average height overall
-var htSum  = 0
-for current in allPlayers {
-    htSum += Int(allPlayers[0]["height"]!)!
-}
-var htAvg = htSum / allPlayers.count
